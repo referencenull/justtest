@@ -47,6 +47,21 @@ function toCurrency(value) {
   return `$${Number(value).toFixed(2)}`;
 }
 
+function escapeHtml(value) {
+  return String(value).replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function productImage(name) {
+  const trimmedName = String(name ?? '').trim();
+  const shortName = trimmedName.length > 0 ? trimmedName.slice(0, 2).toUpperCase() : 'P';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#dfe6ff"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#2a3f8f" font-family="Arial, sans-serif" font-size="18" font-weight="700">${escapeHtml(shortName)}</text></svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
 function renderProducts() {
   const query = searchInput.value.trim().toLowerCase();
   const filtered = products.filter(
@@ -55,11 +70,20 @@ function renderProducts() {
   );
 
   inventoryBody.innerHTML = filtered
-    .map(
-      (product) => `
+    .map((product) => {
+      const name = escapeHtml(product.name);
+      const category = escapeHtml(product.category);
+      const imageSrc = escapeHtml(productImage(product.name));
+
+      return `
       <tr data-id="${product.id}">
-        <td>${product.name}</td>
-        <td>${product.category}</td>
+        <td>
+          <div class="product-cell">
+            <img class="product-image" src="${imageSrc}" alt="${name}" loading="lazy" />
+            <span>${name}</span>
+          </div>
+        </td>
+        <td>${category}</td>
         <td>${toCurrency(product.price)}</td>
         <td>
           <div class="quantity-controls">
@@ -72,8 +96,8 @@ function renderProducts() {
           <button type="button" class="delete-btn">Delete</button>
         </td>
       </tr>
-    `
-    )
+    `;
+    })
     .join('');
 }
 
