@@ -57,7 +57,7 @@ function escapeHtml(value) {
 
 function productImage(name) {
   const trimmedName = String(name ?? '').trim();
-  const shortName = trimmedName.slice(0, 2).toUpperCase() || 'P';
+  const shortName = trimmedName.length > 0 ? trimmedName.slice(0, 2).toUpperCase() : 'P';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#dfe6ff"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#2a3f8f" font-family="Arial, sans-serif" font-size="18" font-weight="700">${escapeHtml(shortName)}</text></svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
@@ -73,7 +73,7 @@ function renderProducts() {
     .map((product) => {
       const name = escapeHtml(product.name);
       const category = escapeHtml(product.category);
-      const imageSrc = escapeHtml(productImage(product.name));
+      const imageSrc = productImage(product.name);
 
       return `
       <tr data-id="${product.id}">
