@@ -109,6 +109,21 @@ th {
   font-weight: 600;
 }
 
+.product-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.product-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
 .quantity-controls {
   display: inline-flex;
   align-items: center;
