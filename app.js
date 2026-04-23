@@ -73,7 +73,7 @@ function renderProducts() {
     .map((product) => {
       const name = escapeHtml(product.name);
       const category = escapeHtml(product.category);
-      const imageSrc = productImage(product.name);
+      const imageSrc = escapeHtml(productImage(product.name));
 
       return `
       <tr data-id="${product.id}">
