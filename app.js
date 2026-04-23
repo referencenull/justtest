@@ -26,6 +26,7 @@ const seededProducts = [
 const inventoryBody = document.getElementById('inventory-body');
 const addForm = document.getElementById('add-product-form');
 const searchInput = document.getElementById('search');
+const confettiButton = document.getElementById('confetti-btn');
 
 function loadProducts() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -140,4 +141,18 @@ inventoryBody.addEventListener('change', (event) => {
 });
 
 searchInput.addEventListener('input', renderProducts);
+
+if (confettiButton) {
+  confettiButton.addEventListener('click', () => {
+    if (typeof window.confetti !== 'function') return;
+
+    window.confetti({
+      particleCount: 120,
+      spread: 75,
+      startVelocity: 45,
+      origin: { y: 0.7 }
+    });
+  });
+}
+
 renderProducts();
